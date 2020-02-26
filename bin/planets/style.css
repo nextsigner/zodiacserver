@@ -1,0 +1,35 @@
+QGraphicsView {
+	margin: 60px 0 0 10px;
+}
+
+/* =========================== QRadioButton ========================================== */
+
+QRadioButton {
+	background: #295c98;
+	border: 2px solid #2171d2;
+	border-radius: 3px;
+	font-weight: bold;
+	color: #a5afcf;
+	padding: 3px 6px 3px 1px;
+}
+
+QRadioButton:hover {
+	background: #5399CA;
+	color: #DDD;
+}
+ 
+QRadioButton:checked {
+	background: #00c0ff;
+	color: #003648;
+}
+ 
+QRadioButton:pressed {
+	background: #00A9E0;
+	padding-left: 7px;
+	padding-top: 5px;
+}
+
+QRadioButton::indicator {
+	width: 0;
+	image: none;
+}
