@@ -45,23 +45,7 @@ AstroFileInfo :: AstroFileInfo (QWidget *parent) : AstroFileHandler(parent)
    layout->addWidget(edit,0,0,1,1);
    layout->addWidget(shadow,0,0,1,1);
 
-  connect(edit, SIGNAL(clicked()), this, SIGNAL(clicked()));
-
-  ////////
-  /*AppSettings s;
-
-  //s << fileView->defaultSettings();
-
-  //foreach (AstroFileHandler* h, handlers)
-    //s << h->defaultSettings();
-
-  s.setValue("Scope/defaultLocation",     "37.6184 55.7512 0");
-  s.setValue("Scope/defaultLocationName", "Asunción, Paraguay");
-  s.setValue("Scope/zodiac",              0);          // indexes of ComboBox items, not values itself
-  s.setValue("Scope/houseSystem",         0);
-  s.setValue("Scope/aspectSet",           0);
-  //s.setValue("slide", slides->currentIndex());
-  set*/
+  connect(edit, SIGNAL(clicked()), this, SIGNAL(clicked()));  
  }
 
 void AstroFileInfo :: refresh()
@@ -899,26 +883,110 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
   loadSettings();
 
-  //Argumentos esperedos
-  //1975 6 20 22 00 00 -3 -35.484462 -69.5797495
+  //Argumentos esperados
+  //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495
+  //qDebug()<<"Count args: "<<qApp->arguments().size();
+  if(qApp->arguments().size()==10){
+      QString fileName;
+      fileName.append(qApp->arguments().at(1));
+      AstroFile nf;
+      nf.setName(fileName);
 
-  AstroFile nf;
-  nf.setName("p1");
-  QString str;
-  &str << QVector3D(1,2,3);
-  QDate d(qApp->arguments().at(1).toInt(), qApp->arguments().at(2).toInt(), qApp->arguments().at(3).toInt());
-  QTime t(qApp->arguments().at(4).toInt(), qApp->arguments().at(5).toInt(), 0);
-  nf.setTimezone(qApp->arguments().at(6).toInt());
-  QDateTime dt;
-  dt.setDate(d);
-  dt.setTime(t);
-  nf.setGMT(dt);
+      QDate d(qApp->arguments().at(2).toInt(), qApp->arguments().at(3).toInt(), qApp->arguments().at(4).toInt());
+      QTime t(qApp->arguments().at(5).toInt(), qApp->arguments().at(6).toInt(), 0);
+      //nf.setTimezone(qApp->arguments().at(7).toInt());
 
-  nf.setLocation(QVector3D(-35.484462,-69.5797495,0));
-  nf.save();
+      QDateTime dt;
+      dt.setDate(d);
+      dt.setTime(t);
+      nf.setGMT(dt);
+      nf.setLocation(QVector3D(qApp->arguments().at(8).toFloat(), qApp->arguments().at(9).toFloat(),0));
+      //nf.setLocationName("Malargue Mendoza");
+      nf.save();
 
-  filesBar->addNewFile();
-  filesBar->openFile("p1");
+      qDebug()<<"Time: "<<t.toString();
+      qDebug()<<"Time Zone: "<<nf.getTimezone();
+      qDebug()<<"Time GMT: "<<nf.getGMT();
+      //qDebug() << dt.toTimeSpec(Qt::OffsetFromUTC).toString(Qt::ISODate);
+
+      filesBar->addNewFile();
+      filesBar->openFile(fileName);
+
+      QString json;
+      json.append("{");
+      json.append(" \"sol\":{");
+
+      json.append(" \"numSigno\":");
+      json.append(QString::number(filesBar->currentFiles().at(0)->horoscope().sun.sign->id));
+      json.append(",");
+
+      json.append(" \"signo\":");
+      json.append("\"");
+      json.append(filesBar->currentFiles().at(0)->horoscope().sun.sign->name);
+      json.append("\",");
+
+      json.append(" \"casa\":");
+      json.append(QString::number(filesBar->currentFiles().at(0)->horoscope().sun.house));
+      json.append(",");
+
+      json.append(" \"grados\":");
+      json.append("\"");
+      json.append(A::zodiacPosition(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope().zodiac, A::HighPrecision));
+      json.append("\",");
+
+      json.append("},");
+
+      json.append("}");
+
+      qDebug()<<"Json: "<<json;
+
+      //qDebug()<<"Circle: "<<filesBar->currentFiles().at(0)->;
+      //foreach (const Planet& p, scope.planets)
+        //ret += describePlanet(p, scope.zodiac) + "\n";
+
+      foreach (const A::Planet& p, filesBar->currentFiles().at(0)->horoscope().planets) // update planets
+       {
+        float angle = p.eclipticPos.x();
+
+        QString toolTip = QString("%1 %2, %3").arg(p.name)
+                                              .arg(A::zodiacPosition(p,  filesBar->currentFiles().at(0)->horoscope().zodiac, A::HighPrecision))
+                                              .arg(A::houseNum(p));
+        qDebug()<<"angulo: "<<angle<<" planeta"<<p.name;
+        qDebug()<<"toolTip: "<<toolTip;
+        QString des;
+        des += describePlanet(p, filesBar->currentFiles().at(0)->horoscope().zodiac);
+        des += "\n";
+        des += A::houseTag(p.id + 1) ;+ " -" +
+        A::zodiacPosition(filesBar->currentFiles().at(0)->horoscope().houses.cusp[p.id], filesBar->currentFiles().at(0)->horoscope().zodiac);
+        //A::zodiacPosition(A::houses.cusp[0], filesBar->currentFiles().at(0)->horoscope().zodiac);
+        des += "\n";
+        qDebug()<<"describle: "<<des;
+
+      }
+
+
+      for (int i = 0; i < 12; i++)                           // update cuspides && labels
+       {
+        float cusp = filesBar->currentFiles().at(0)->horoscope().houses.cusp[i];
+        QString tag = tr("%1+%2").arg(A::romanNum(i+1))
+                                 .arg(A::getSign(cusp, filesBar->currentFiles().at(0)->horoscope().zodiac).name);
+         qDebug()<<"tag: "<<tag;
+       }
+      if (filesBar->currentFiles().at(0)->horoscope().sun.houseRuler > 0)
+       {
+            qDebug()<<"Ruler: "<<A::romanNum(filesBar->currentFiles().at(0)->horoscope().sun.houseRuler);
+          //item->setProperty("ruler",   tr("ruler of %1").arg();
+        //item->setProperty("ruleTip",    planet.name + "+" + A::houseNum(planet) + "+" +
+                                        //"ruler" + A::romanNum(planet.houseRuler));
+       }
+      else
+       {
+        qDebug()<<"Ruler: vacio";
+       }
+  }else{
+      qDebug()<<"Argumentos insuficientes";
+      this->close();
+  }
 }
 
 void MainWindow        :: contextMenu         ( QPoint p )

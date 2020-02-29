@@ -7,6 +7,9 @@
 #include <Astroprocessor/Gui>
 #include "help.h"
 #include "slidewidget.h"
+#include <Astroprocessor/Output>
+#include <Astroprocessor/Calc>
+
 
 class QListWidget;
 class QLineEdit;
