@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2020-05-03T01:17:25. -->
+<!-- Written by QtCreator 4.11.0, 2020-02-29T19:43:10. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -116,7 +116,7 @@
     <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/media/nextsigner/ZONA-A11/nsp/unik-dev-apps/zodiac/Error in &quot; Util.asciify(&quot;build-zodiac_bundle-Desktop-Release&quot;)&quot;: TypeError: Property 'asciify' of object Core::Internal::UtilsJsExtension(0x20b92f0) is not a function</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/media/nextsigner/ZONA-A11/nsp/unik-dev-apps/build_zodiac_server</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -237,7 +237,7 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/media/nextsigner/ZONA-A11/nsp/unik-dev-apps/zodiacserver/zodiacserver/zodiac_server.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/media/nextsigner/ZONA-A11/nsp/unik-dev-apps/zodiacserver/zodiacserver/zodiac_server.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments">fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495</value>
+    <value type="QString" key="RunConfiguration.Arguments">file1 1975 6 20 22 00 -3 -35.484462 -69.5797495</value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>

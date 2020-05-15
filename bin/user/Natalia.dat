@@ -1,0 +1,10 @@
+[General]
+GMT=1980-09-08T19:40:24
+comment=
+lat=@Variant(\0\0\0\x87\xc2\v\f\xc0)
+lon=@Variant(\0\0\0\x87\xc2j\x86\xad)
+name=Natalia
+placeTag=
+timezone=-3
+type=Female
+z=@Variant(\0\0\0\x87\0\0\0\0)

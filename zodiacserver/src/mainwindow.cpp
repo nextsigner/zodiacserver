@@ -891,6 +891,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
       fileName.append(qApp->arguments().at(1));
       AstroFile nf;
       nf.setName(fileName);
+      //nf.getZodiac()
 
       QDate d(qApp->arguments().at(2).toInt(), qApp->arguments().at(3).toInt(), qApp->arguments().at(4).toInt());
       QTime t(qApp->arguments().at(5).toInt(), qApp->arguments().at(6).toInt(), 0);
@@ -912,80 +913,95 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
       filesBar->addNewFile();
       filesBar->openFile(fileName);
 
-      QString json;
-      json.append("{");
-      json.append(" \"sol\":{");
+      QString resultado;
+      int articles = (true)   |
+                     (true) |
+                     (true)  |
+                     (true)  |
+                     (true);
 
-      json.append(" \"numSigno\":");
-      json.append(QString::number(filesBar->currentFiles().at(0)->horoscope().sun.sign->id));
-      json.append(",");
-
-      json.append(" \"signo\":");
-      json.append("\"");
-      json.append(filesBar->currentFiles().at(0)->horoscope().sun.sign->name);
-      json.append("\",");
-
-      json.append(" \"casa\":");
-      json.append(QString::number(filesBar->currentFiles().at(0)->horoscope().sun.house));
-      json.append(",");
-
-      json.append(" \"grados\":");
-      json.append("\"");
-      json.append(A::zodiacPosition(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope().zodiac, A::HighPrecision));
-      json.append("\",");
-
-      json.append("},");
-
-      json.append("}");
-
-      qDebug()<<"Json: "<<json;
-
-      //qDebug()<<"Circle: "<<filesBar->currentFiles().at(0)->;
-      //foreach (const Planet& p, scope.planets)
-        //ret += describePlanet(p, scope.zodiac) + "\n";
-
-      foreach (const A::Planet& p, filesBar->currentFiles().at(0)->horoscope().planets) // update planets
-       {
-        float angle = p.eclipticPos.x();
-
-        QString toolTip = QString("%1 %2, %3").arg(p.name)
-                                              .arg(A::zodiacPosition(p,  filesBar->currentFiles().at(0)->horoscope().zodiac, A::HighPrecision))
-                                              .arg(A::houseNum(p));
-        qDebug()<<"angulo: "<<angle<<" planeta"<<p.name;
-        qDebug()<<"toolTip: "<<toolTip;
-        QString des;
-        des += describePlanet(p, filesBar->currentFiles().at(0)->horoscope().zodiac);
-        des += "\n";
-        des += A::houseTag(p.id + 1) ;+ " -" +
-        A::zodiacPosition(filesBar->currentFiles().at(0)->horoscope().houses.cusp[p.id], filesBar->currentFiles().at(0)->horoscope().zodiac);
-        //A::zodiacPosition(A::houses.cusp[0], filesBar->currentFiles().at(0)->horoscope().zodiac);
-        des += "\n";
-        qDebug()<<"describle: "<<des;
-
+      //Planetas en signo y casa
+      for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().planets.count();i++) {
+         qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
       }
 
+      //resultado.append(nz.describe(nf->horoscope(), (nf.getZodiac()::Article)articles));
 
-      for (int i = 0; i < 12; i++)                           // update cuspides && labels
-       {
-        float cusp = filesBar->currentFiles().at(0)->horoscope().houses.cusp[i];
-        QString tag = tr("%1+%2").arg(A::romanNum(i+1))
-                                 .arg(A::getSign(cusp, filesBar->currentFiles().at(0)->horoscope().zodiac).name);
-         qDebug()<<"tag: "<<tag;
-       }
-      if (filesBar->currentFiles().at(0)->horoscope().sun.houseRuler > 0)
-       {
-            qDebug()<<"Ruler: "<<A::romanNum(filesBar->currentFiles().at(0)->horoscope().sun.houseRuler);
-          //item->setProperty("ruler",   tr("ruler of %1").arg();
-        //item->setProperty("ruleTip",    planet.name + "+" + A::houseNum(planet) + "+" +
-                                        //"ruler" + A::romanNum(planet.houseRuler));
-       }
-      else
-       {
-        qDebug()<<"Ruler: vacio";
-       }
+//      QString json;
+//      json.append("{");
+//      json.append(" \"sol\":{");
+
+//      json.append(" \"numSigno\":");
+//      json.append(QString::number(filesBar->currentFiles().at(0)->horoscope().sun.sign->id));
+//      json.append(",");
+
+//      json.append(" \"signo\":");
+//      json.append("\"");
+//      json.append(filesBar->currentFiles().at(0)->horoscope().sun.sign->name);
+//      json.append("\",");
+
+//      json.append(" \"casa\":");
+//      json.append(QString::number(filesBar->currentFiles().at(0)->horoscope().sun.house));
+//      json.append(",");
+
+//      json.append(" \"grados\":");
+//      json.append("\"");
+//      json.append(A::zodiacPosition(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope().zodiac, A::HighPrecision));
+//      json.append("\",");
+
+//      json.append("},");
+
+//      json.append("}");
+
+//      qDebug()<<"Json: "<<json;
+
+//      //qDebug()<<"Circle: "<<filesBar->currentFiles().at(0)->;
+//      //foreach (const Planet& p, scope.planets)
+//        //ret += describePlanet(p, scope.zodiac) + "\n";
+
+//      foreach (const A::Planet& p, filesBar->currentFiles().at(0)->horoscope().planets) // update planets
+//       {
+//        float angle = p.eclipticPos.x();
+
+//        QString toolTip = QString("%1 %2, %3").arg(p.name)
+//                                              .arg(A::zodiacPosition(p,  filesBar->currentFiles().at(0)->horoscope().zodiac, A::HighPrecision))
+//                                              .arg(A::houseNum(p));
+//        //qDebug()<<"angulo: "<<angle<<" planeta"<<p.name;
+//        //qDebug()<<"toolTip: "<<toolTip;
+//        QString des;
+//        des += describePlanet(p, filesBar->currentFiles().at(0)->horoscope().zodiac);
+//        des += "\n";
+//        des += A::houseTag(p.id + 1) ;+ " -" +
+//        A::zodiacPosition(filesBar->currentFiles().at(0)->horoscope().houses.cusp[p.id], filesBar->currentFiles().at(0)->horoscope().zodiac);
+//        //A::zodiacPosition(A::houses.cusp[0], filesBar->currentFiles().at(0)->horoscope().zodiac);
+//        des += "\n";
+//        //qDebug()<<"describle: "<<des;
+
+
+
+//      }
+//      for (int i = 0; i < 12; i++)                           // update cuspides && labels
+//       {
+//        float cusp = filesBar->currentFiles().at(0)->horoscope().houses.cusp[i];
+//        QString tag = tr("%1+%2").arg(A::romanNum(i+1))
+//                                 .arg(A::getSign(cusp, filesBar->currentFiles().at(0)->horoscope().zodiac).name);
+//         qDebug()<<"tag: "<<tag;
+//       }
+//      if (filesBar->currentFiles().at(0)->horoscope().sun.houseRuler > 0)
+//       {
+//            qDebug()<<"Ruler: "<<A::romanNum(filesBar->currentFiles().at(0)->horoscope().sun.houseRuler);
+//          //item->setProperty("ruler",   tr("ruler of %1").arg();
+//        //item->setProperty("ruleTip",    planet.name + "+" + A::houseNum(planet) + "+" +
+//                                        //"ruler" + A::romanNum(planet.houseRuler));
+//       }
+//      else
+//       {
+//        qDebug()<<"Ruler: vacio";
+//       }
   }else{
       qDebug()<<"Argumentos insuficientes";
-      this->close();
+       //filesBar->openFile("Natalia");
+      //this->close();
   }
 }
 
