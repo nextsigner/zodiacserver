@@ -901,30 +901,35 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
       dt.setDate(d);
       dt.setTime(t);
       nf.setGMT(dt);
+      nf.setTimezone(qApp->arguments().at(7).toInt());
       nf.setLocation(QVector3D(qApp->arguments().at(8).toFloat(), qApp->arguments().at(9).toFloat(),0));
       //nf.setLocationName("Malargue Mendoza");
       nf.save();
 
-      qDebug()<<"Time: "<<t.toString();
-      qDebug()<<"Time Zone: "<<nf.getTimezone();
-      qDebug()<<"Time GMT: "<<nf.getGMT();
-      //qDebug() << dt.toTimeSpec(Qt::OffsetFromUTC).toString(Qt::ISODate);
+      //qDebug()<<"Time: "<<t.toString();
+      //qDebug()<<"Time Zone: "<<nf.getTimezone();
+      //qDebug()<<"Time GMT: "<<nf.getGMT();
 
       filesBar->addNewFile();
       filesBar->openFile(fileName);
-
-      QString resultado;
-      int articles = (true)   |
-                     (true) |
-                     (true)  |
-                     (true)  |
-                     (true);
 
       //Planetas en signo y casa
       for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().planets.count();i++) {
          qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
       }
+      QStringList h0=A::describeHouses(filesBar->currentFiles().at(0)->horoscope().houses, filesBar->currentFiles().at(0)->horoscope().zodiac).split("\n");
+      for (int i=0;i<h0.length();i++) {
+         qDebug()<<h0.at(i);
+      }
+       for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().aspects.count();i++) {
+            QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
+              qDebug()<<a1;
+       }
 
+       //qDebug()<<A::describePower(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope());
+
+      //describeHouses
+         //qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
       //resultado.append(nz.describe(nf->horoscope(), (nf.getZodiac()::Article)articles));
 
 //      QString json;
