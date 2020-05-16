@@ -885,9 +885,9 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     loadSettings();
     
     //Argumentos esperados
-    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495
+    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 /home/nextsigner/data.json
     //qDebug()<<"Count args: "<<qApp->arguments().size();
-    if(qApp->arguments().size()==10){
+    if(qApp->arguments().size()==11){
         QString fileName;
         fileName.append(qApp->arguments().at(1));
         AstroFile nf;
@@ -922,7 +922,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             QString d=A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
             QString item;
             //qDebug()<<"["<<d<<"]";
-            QStringList m0=d.replace(" Pole", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").split("@");
+            QStringList m0=d.replace(" Pole", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").split("@");
 
             if(i!=0){
                 item.append(",");
@@ -990,10 +990,10 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         
         QString json;
         json.append("{\n");
-        json.append(psc);
+        json.append(psc.toLower());
         json.append("}\n");
         qDebug()<<json;
-        QFile jsonFile("/home/nextsigner/data.json");
+        QFile jsonFile(qApp->arguments().at(10));
         jsonFile.open(QIODevice::WriteOnly);
         jsonFile.write(json.toUtf8());
         jsonFile.close();
