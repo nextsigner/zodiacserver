@@ -972,11 +972,45 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             psc.append(item);
         }
         psc.append("}\n");
-        //qDebug()<<psc;
+
+
+        //Casas
+        QString pc;
+        pc.append("\"pc\":{\n");
         QStringList h0=A::describeHouses(filesBar->currentFiles().at(0)->horoscope().houses, filesBar->currentFiles().at(0)->horoscope().zodiac).split("\n");
-        for (int i=0;i<h0.length();i++) {
-            //qDebug()<<h0.at(i);
+        for (int i=1;i<h0.length();i++) {
+            qDebug()<<h0.at(i);
+            QString d;
+            d.append(h0.at(i));
+            QStringList m0=d.replace("\"", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").split("@");
+            qDebug()<<"--->"<<m0;
+            QString item;
+            if(i!=1){
+                item.append(",");
+            }
+
+            item.append("\"h");
+            item.append(QString::number(i));
+            item.append("\":{");
+
+            item.append("\"s\":\"");
+            item.append(m0.at(m0.length()-2));
+            item.append("\",");
+
+            item.append("\"g\":");
+            item.append(QString::number(m0.at(m0.length()-1).toInt()));
+            item.append(",");
+
+            item.append("\"m\":");
+            item.append(QString::number(m0.at(m0.length()-3).toInt()));
+            //item.append("\"");
+
+            item.append("}\n");
+            pc.append(item);
         }
+        pc.append("}\n");
+
+        //Aspectos
         for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().aspects.count();i++) {
             QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
             //qDebug()<<a1;
@@ -984,13 +1018,16 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
         //qDebug()<<A::describePower(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope());
 
-        //describeHouses
         //qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
         //resultado.append(nz.describe(nf->horoscope(), (nf.getZodiac()::Article)articles));
         
+        //qDebug()<<nz.describe(nf->horoscope(), (filesBar->currentFiles().at(0).getZodiac()::Article)articles);
+
         QString json;
         json.append("{\n");
         json.append(psc.toLower());
+        json.append(",");
+        json.append(pc.toLower());
         json.append("}\n");
         qDebug()<<json;
         QFile jsonFile(qApp->arguments().at(10));
