@@ -914,6 +914,48 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         filesBar->addNewFile();
         filesBar->openFile(fileName);
 
+        //Casas
+        QString params;
+        params.append("\"params\":{\n");
+
+        params.append("\"n\":\"");
+        params.append(qApp->arguments().at(1));
+        params.append("\",");
+
+        params.append("\"a\":\"");
+        params.append(qApp->arguments().at(2));
+        params.append("\",");
+
+        params.append("\"m\":\"");
+        params.append(qApp->arguments().at(3));
+        params.append("\",");
+
+        params.append("\"d\":\"");
+        params.append(qApp->arguments().at(4));
+        params.append("\",");
+
+        params.append("\"h\":\"");
+        params.append(qApp->arguments().at(5));
+        params.append("\",");
+
+        params.append("\"min\":\"");
+        params.append(qApp->arguments().at(6));
+        params.append("\",");
+
+        params.append("\"gmt\":\"");
+        params.append(qApp->arguments().at(7));
+        params.append("\",");
+
+        params.append("\"lat\":\"");
+        params.append(qApp->arguments().at(8));
+        params.append("\",");
+
+        params.append("\"lon\":\"");
+        params.append(qApp->arguments().at(8));
+        params.append("\"");
+
+        params.append("}\n");
+
         //Planetas en signo y casa
         QString psc;
         psc.append("\"psc\":{\n");
@@ -982,7 +1024,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             qDebug()<<h0.at(i);
             QString d;
             d.append(h0.at(i));
-            QStringList m0=d.replace("\"", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").split("@");
+            QStringList m0=d.replace("\"", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").replace("\n", "").split("@");
             qDebug()<<"--->"<<m0;
             QString item;
             if(i!=1){
@@ -1025,6 +1067,8 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
         QString json;
         json.append("{\n");
+        json.append(params);
+        json.append(",");
         json.append(psc.toLower());
         json.append(",");
         json.append(pc.toLower());
