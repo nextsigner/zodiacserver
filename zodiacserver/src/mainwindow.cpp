@@ -14,6 +14,7 @@
 #include <QGraphicsBlurEffect>
 #include <math.h>
 #include <QDebug>
+#include <QTimeZone>
 #include <QFile>
 #include "../plain/src/plain.h"
 #include "../chart/src/chart.h"
@@ -885,9 +886,9 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     loadSettings();
     
     //Argumentos esperados
-    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 /home/nextsigner/data.json
+    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza /home/nextsigner/data.json
     //qDebug()<<"Count args: "<<qApp->arguments().size();
-    if(qApp->arguments().size()==11){
+    if(qApp->arguments().size()==12){
         QString fileName;
         fileName.append(qApp->arguments().at(1));
         AstroFile nf;
@@ -896,15 +897,32 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         
         QDate d(qApp->arguments().at(2).toInt(), qApp->arguments().at(3).toInt(), qApp->arguments().at(4).toInt());
         QTime t(qApp->arguments().at(5).toInt(), qApp->arguments().at(6).toInt(), 0);
-        //nf.setTimezone(qApp->arguments().at(7).toInt());
-        
+
         QDateTime dt;
         dt.setDate(d);
         dt.setTime(t);
+        int sec;
+        if(qApp->arguments().at(7).toInt()<0){
+            sec=(3600*abs(qApp->arguments().at(7).toInt()));
+        }else{
+            sec=0-(3600*qApp->arguments().at(7).toInt());
+        }
+
+        QString locale_st_HH = QLocale("en_EN").toString(dt, "yyyy MMMM dd HH.mm.ss zzz ap");
+        qDebug()<<"Time: "<<locale_st_HH;
+        dt=dt.addSecs(sec);
         nf.setGMT(dt);
         nf.setTimezone(qApp->arguments().at(7).toInt());
-        nf.setLocation(QVector3D(qApp->arguments().at(8).toFloat(), qApp->arguments().at(9).toFloat(),0));
-        //nf.setLocationName("Malargue Mendoza");
+        nf.setLocation(QVector3D(qApp->arguments().at(9).toFloat(), qApp->arguments().at(8).toFloat(),0));
+        QString nomciu;
+        nomciu.append(qApp->arguments().at(10));
+        QString ln;
+        ln.append(nomciu.replace("_", " "));
+        ln.append("\nlat: ");
+        ln.append(qApp->arguments().at(8));
+        ln.append("\nlon: ");
+        ln.append(qApp->arguments().at(9));
+        nf.setLocationName(ln);
         nf.save();
         
         //qDebug()<<"Time: "<<t.toString();
@@ -1074,7 +1092,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         json.append(pc.toLower());
         json.append("}\n");
         qDebug()<<json;
-        QFile jsonFile(qApp->arguments().at(10));
+        QFile jsonFile(qApp->arguments().at(11));
         jsonFile.open(QIODevice::WriteOnly);
         jsonFile.write(json.toUtf8());
         jsonFile.close();
