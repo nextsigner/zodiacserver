@@ -886,9 +886,9 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     loadSettings();
     
     //Argumentos esperados
-    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza /home/nextsigner/data.json
+    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza /home/nextsigner/data.json 15321321
     //qDebug()<<"Count args: "<<qApp->arguments().size();
-    if(qApp->arguments().size()==12){
+    if(qApp->arguments().size()==13){
         QString fileName;
         fileName.append(qApp->arguments().at(1));
         AstroFile nf;
@@ -935,6 +935,10 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         //Casas
         QString params;
         params.append("\"params\":{\n");
+
+        params.append("\"ms\":\"");
+        params.append(qApp->arguments().at(12));
+        params.append("\",");
 
         params.append("\"n\":\"");
         params.append(qApp->arguments().at(1));
