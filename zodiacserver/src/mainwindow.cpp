@@ -951,7 +951,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         params.append("\",");
 
         params.append("\"lon\":\"");
-        params.append(qApp->arguments().at(8));
+        params.append(qApp->arguments().at(9));
         params.append("\"");
 
         params.append("}\n");
