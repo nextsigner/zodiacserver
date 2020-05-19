@@ -998,11 +998,11 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             item.append("\",");
 
             item.append("\"g\":");
-            item.append(QString::number(m0.at(m0.length()-1).toInt()));
+            item.append(QString::number(m0.at(m0.length()-3).toInt()));
             item.append(",");
 
             item.append("\"m\":");
-            item.append(QString::number(m0.at(m0.length()-3).toInt()));
+            item.append(QString::number(m0.at(m0.length()-1).toInt()));
             //item.append("\"");
 
             item.append("}\n");
@@ -1012,7 +1012,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
         //Aspectos
         for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().aspects.count();i++) {
-            QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
+            //QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
             //qDebug()<<a1;
         }
 
