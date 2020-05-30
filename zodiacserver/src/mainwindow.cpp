@@ -1095,7 +1095,8 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         json.append(",");
         json.append(pc.toLower());
         json.append("}\n");
-        qDebug()<<json;
+        //qDebug()<<json;
+        qDebug()<<"Saving json file "<<qApp->arguments().at(11);
         QFile jsonFile(qApp->arguments().at(11));
         jsonFile.open(QIODevice::WriteOnly);
         jsonFile.write(json.toUtf8());
