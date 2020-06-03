@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTabBar>
 #include <QDockWidget>
+#include <QTimer>
 #include <Astroprocessor/Gui>
 #include "help.h"
 #include "slidewidget.h"
@@ -204,6 +205,10 @@ class MainWindow : public QMainWindow, public Customizable
         QToolBar       *toolBar, *toolBar2, *helpToolBar;
         QMenu*         panelsMenu;
 
+        //Zodiac Server
+        QTimer *timerQuit;
+        QTimer *timerCapture;
+
         void addToolBarActions();
         QAction* createActionForPanel(QWidget* w/*, const QIcon &icon*/);
 
@@ -214,6 +219,9 @@ class MainWindow : public QMainWindow, public Customizable
         void showAbout();
         void gotoUrl(QString url = "");
         void contextMenu(QPoint);
+
+        //Zodiac Server
+        void capture();
 
     protected:
         AppSettings defaultSettings ();      // 'Customizable' class implementations

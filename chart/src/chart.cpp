@@ -126,7 +126,7 @@ Chart :: Chart(QWidget *parent) : AstroFileHandler(parent)
   chartsCount = 0;
   zoom = 1;
 
-  float scale = 0.8;
+  float scale = 0.75;
   viewport = QRect(chartRect().x() / scale, chartRect().y() / scale, chartRect().width() / scale, chartRect().height() / scale);
 
   view = new QGraphicsView(this);

@@ -14,7 +14,6 @@
 #include <QGraphicsBlurEffect>
 #include <math.h>
 #include <QDebug>
-#include <QTimeZone>
 #include <QFile>
 #include "../plain/src/plain.h"
 #include "../chart/src/chart.h"
@@ -829,6 +828,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     toolBar2           = new QToolBar(tr("Options"),  this);
     helpToolBar        = new QToolBar(tr("Hint"),  this);
     panelsMenu         = new QMenu;
+
     
     toolBar            -> setObjectName("toolBar");
     toolBar2           -> setObjectName("toolBar2");
@@ -853,7 +853,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     layout->setMargin(0);
     layout->addWidget(filesBar, 0, Qt::AlignLeft);
     layout->addWidget(astroWidget);
-    
+
     setCentralWidget(wdg);
     addToolBarActions();
     addToolBar(Qt::TopToolBarArea, toolBar);
@@ -861,7 +861,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     addToolBar(Qt::TopToolBarArea, toolBar2);
     addToolBar(Qt::TopToolBarArea, helpToolBar);
     addDockWidget(Qt::LeftDockWidgetArea, databaseDockWidget);
-    
+
     foreach(QDockWidget* w, astroWidget->getDockPanels())
     {
         addDockWidget(Qt::RightDockWidgetArea, w);
@@ -885,10 +885,27 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     
     loadSettings();
     
+
+
+    /*===================ZODIAC SERVER ====================*/
+
     //Argumentos esperados
-    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza /home/nextsigner/data.json 15321321
-    //qDebug()<<"Count args: "<<qApp->arguments().size();
-    if(qApp->arguments().size()==13){
+    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza /home/nextsigner/data.json 15321321 10 "/home/nextsigner/Escritorio/capture.png"
+    //fileName año mes día hora minutos gmt lat lon ciudad jsonLocation ms secsTimerQuit captureLocation
+    qDebug()<<"Count args: "<<qApp->arguments().size();
+
+    if(qApp->arguments().size()==15){
+        this->setGeometry(0,0,1920,1080);
+        //Timer Capture
+        timerCapture = new QTimer(this);
+        connect(timerCapture, SIGNAL(timeout()), this, SLOT(capture()));
+        timerCapture->start(1000);
+
+        //Timer Quit
+        timerQuit = new QTimer(this);
+        connect(timerQuit, SIGNAL(timeout()), qApp, SLOT(quit()));
+        timerQuit->start(qApp->arguments().at(13).toInt()*1000);
+
         QString fileName;
         fileName.append(qApp->arguments().at(1));
         AstroFile nf;
@@ -931,6 +948,9 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         
         filesBar->addNewFile();
         filesBar->openFile(fileName);
+        astroWidget->setGeometry(0,0, 800, 600);
+
+        //filesBar->currentFiles().at(0)->get
 
         //Casas
         QString params;
@@ -1106,6 +1126,15 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         //filesBar->openFile("Natalia");
         //this->close();
     }
+}
+
+void MainWindow::capture()
+{
+    astroWidget->getDockPanels().at(0)->setVisible(false);
+    databaseDockWidget->setVisible(false);
+    QPixmap pixmap(astroWidget->geometry().size());
+     this->render(&pixmap, QPoint(0, 0), QRegion(0, astroWidget->getToolBar()->height()+filesBar->height(),astroWidget->geometry().width(),astroWidget->geometry().height()));
+    pixmap.save(qApp->arguments().at(14));
 }
 
 void MainWindow        :: contextMenu         ( QPoint p )
