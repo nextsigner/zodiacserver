@@ -15,3 +15,6 @@ include(../details/details.pri)
 include(zodiac.pri)
 
 #CONFIG(release, debug|release): DEFINES += QT_NO_DEBUG_OUTPUT
+
+DISTFILES += \
+    src/test.sh
