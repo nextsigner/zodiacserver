@@ -148,7 +148,7 @@ Chart :: Chart(QWidget *parent) : AstroFileHandler(parent)
     //Zodiac Server
     if(qApp->applicationFilePath().indexOf("zodiac_server")>0){
         view->setObjectName("chartview");
-        view->setStyleSheet("#chartview{background-color: #333}");
+        view->setStyleSheet("#chartview{background-color: #000}");
     }
 }
 
