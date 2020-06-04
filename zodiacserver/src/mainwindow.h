@@ -234,6 +234,9 @@ class MainWindow : public QMainWindow, public Customizable
     public:
         MainWindow(QWidget *parent = 0);
 
+        //Zodiac Server
+        QWidget *xCn;
+
 };
 
 #endif // MAINWINDOW_H

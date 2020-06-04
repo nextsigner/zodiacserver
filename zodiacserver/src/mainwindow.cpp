@@ -819,9 +819,9 @@ void FilesBar :: openFileAsSecond(QString name)
 MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 {
     HelpWidget* help   = new HelpWidget("text/" + A::usedLanguage(), this);
-    
+
     filesBar           = new FilesBar(this);
-    astroWidget        = new AstroWidget(this);
+    astroWidget        = new AstroWidget();
     databaseDockWidget = new QDockWidget(this);
     astroDatabase      = new AstroDatabase();
     toolBar            = new QToolBar(tr("File"),     this);
@@ -852,7 +852,23 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->addWidget(filesBar, 0, Qt::AlignLeft);
-    layout->addWidget(astroWidget);
+    //layout->addWidget(astroWidget);
+    astroWidget->setGeometry(0,0,1920,1080);
+
+
+    int xCnWidth=2560*2;
+    int xCnHeight=1440*2;
+    xCn=new QWidget();
+    xCn->setMinimumWidth(xCnWidth);
+    xCn->setMinimumHeight(xCnHeight);
+    xCn->setMaximumWidth(xCnWidth);
+    xCn->setMaximumHeight(xCnHeight);
+    xCn->setGeometry(0,0, xCnWidth, xCnHeight);
+    xCn->show();
+    QVBoxLayout* layoutCn = new QVBoxLayout(xCn);
+    layoutCn->setSpacing(0);
+    layoutCn->setMargin(0);
+    layoutCn->addWidget(astroWidget);
 
     setCentralWidget(wdg);
     addToolBarActions();
@@ -895,7 +911,8 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     qDebug()<<"Count args: "<<qApp->arguments().size();
 
     if(qApp->arguments().size()==15){
-        this->setGeometry(0,0,1920,1080);
+        //this->setGeometry(0,0,1920,1080);
+
         //Timer Capture
         timerCapture = new QTimer(this);
         connect(timerCapture, SIGNAL(timeout()), this, SLOT(capture()));
@@ -1130,10 +1147,8 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
 void MainWindow::capture()
 {
-    astroWidget->getDockPanels().at(0)->setVisible(false);
-    databaseDockWidget->setVisible(false);
-    QPixmap pixmap(astroWidget->geometry().size());
-     this->render(&pixmap, QPoint(0, 0), QRegion(0, astroWidget->getToolBar()->height()+filesBar->height(),astroWidget->geometry().width(),astroWidget->geometry().height()));
+    QPixmap pixmap(xCn->geometry().size());
+    xCn->render(&pixmap, QPoint(0, 0), QRegion(0,0,xCn->geometry().width(), xCn->geometry().height()));
     pixmap.save(qApp->arguments().at(14));
 }
 
