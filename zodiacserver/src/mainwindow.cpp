@@ -852,23 +852,11 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->addWidget(filesBar, 0, Qt::AlignLeft);
-    //layout->addWidget(astroWidget);
-    astroWidget->setGeometry(0,0,1920,1080);
 
-
-    int xCnWidth=2560*2;
-    int xCnHeight=1440*2;
-    xCn=new QWidget();
-    xCn->setMinimumWidth(xCnWidth);
-    xCn->setMinimumHeight(xCnHeight);
-    xCn->setMaximumWidth(xCnWidth);
-    xCn->setMaximumHeight(xCnHeight);
-    xCn->setGeometry(0,0, xCnWidth, xCnHeight);
-    xCn->show();
-    QVBoxLayout* layoutCn = new QVBoxLayout(xCn);
-    layoutCn->setSpacing(0);
-    layoutCn->setMargin(0);
-    layoutCn->addWidget(astroWidget);
+    //Zodiac Server
+    if(qApp->applicationFilePath().indexOf("zodiac_server")<0){
+        layout->addWidget(astroWidget);
+    }
 
     setCentralWidget(wdg);
     addToolBarActions();
@@ -907,11 +895,30 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
     //Argumentos esperados
     //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza /home/nextsigner/data.json 15321321 10 "/home/nextsigner/Escritorio/capture.png"
-    //fileName año mes día hora minutos gmt lat lon ciudad jsonLocation ms secsTimerQuit captureLocation
-    qDebug()<<"Count args: "<<qApp->arguments().size();
+    //fileName año mes día hora minutos gmt lat lon ciudad jsonLocation ms secsTimerQuit captureLocation resCap5120x2880
+    //qDebug()<<"Count args: "<<qApp->arguments().size();
 
-    if(qApp->arguments().size()==15){
-        //this->setGeometry(0,0,1920,1080);
+    if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&qApp->arguments().size()==16){
+        QStringList slResCap=qApp->arguments().at(15).split("x");
+        if(slResCap.length()!=2){
+            qDebug()<<"Error de resolución de captura.";
+            this->close();
+        }
+        int xCnWidth=slResCap.at(0).toInt();
+        int xCnHeight=slResCap.at(1).toInt();
+        xCn=new QWidget();
+        xCn->setObjectName("xcn");
+        xCn->setStyleSheet("#xcn{background-color: red}");
+        xCn->setMinimumWidth(xCnWidth);
+        xCn->setMinimumHeight(xCnHeight);
+        xCn->setMaximumWidth(xCnWidth);
+        xCn->setMaximumHeight(xCnHeight);
+        xCn->setGeometry(0,0, xCnWidth, xCnHeight);
+        xCn->show();
+        QVBoxLayout* layoutCn = new QVBoxLayout(xCn);
+        layoutCn->setSpacing(0);
+        layoutCn->setMargin(0);
+        layoutCn->addWidget(astroWidget);
 
         //Timer Capture
         timerCapture = new QTimer(this);
