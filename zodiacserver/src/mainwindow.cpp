@@ -1029,8 +1029,8 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             //qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
             QString d=A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
             QString item;
-            //qDebug()<<"["<<d<<"]";
-            QStringList m0=d.replace(" Pole", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").split("@");
+            qDebug()<<"["<<d<<"]\n\n";
+            QStringList m0=d.replace(" Pole", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").replace("@@@@", "@").replace("@@@", "@").replace("@@", "@").split("@");
 
             if(i!=0){
                 item.append(",");
