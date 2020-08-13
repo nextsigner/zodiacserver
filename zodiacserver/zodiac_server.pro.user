@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2020-06-14T02:28:21. -->
+<!-- Written by QtCreator 4.11.0, 2020-08-13T15:42:15. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -116,7 +116,7 @@
     <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/media/nextsigner/ZONA-A11/nsp/unik-dev-apps/zodiac/Error in &quot; Util.asciify(&quot;build-zodiac_bundle-Desktop-Release&quot;)&quot;: TypeError: Property 'asciify' of object Core::Internal::UtilsJsExtension(0x20b92f0) is not a function</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/media/nextsigner/ZONA-A12/nsp/unik-dev-apps/zodiac/build-zodiacserver</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -235,9 +235,10 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/media/nextsigner/ZONA-A11/nsp/unik-dev-apps/zodiacserver/zodiacserver/zodiac_server.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/media/nextsigner/ZONA-A11/nsp/unik-dev-apps/zodiacserver/zodiacserver/zodiac_server.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments">fileName 1999 12 29 7 00 -3 -31.7319698 -60.5237999 Parana_Entre_Rios /home/nextsigner/data.json 1500000 10 /home/nextsigner/Escritorio/capture.png 5120x2880</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">zodiac_server2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/media/nextsigner/ZONA-A12/nsp/unik-dev-apps/zodiacserver/zodiacserver/zodiac_server.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/media/nextsigner/ZONA-A12/nsp/unik-dev-apps/zodiacserver/zodiacserver/zodiac_server.pro</value>
+    <value type="QString" key="RunConfiguration.Arguments">fileName 1999 12 29 7 00 -3 -35.484462 -60.5237999 Malargue_Mendoza /home/nextsigner/data.json 1500000 10 /home/nextsigner/Escritorio/capture.png 5120x2880</value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
@@ -247,7 +248,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/media/nextsigner/ZONA-A11/nsp/unik-dev-apps/zodiacserver/zodiacserver/../bin</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/media/nextsigner/ZONA-A12/nsp/unik-dev-apps/zodiacserver/zodiacserver/../bin</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

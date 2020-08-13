@@ -1018,6 +1018,10 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
         params.append("\"lon\":\"");
         params.append(qApp->arguments().at(9));
+        params.append("\",");
+
+        params.append("\"ciudad\":\"");
+        params.append(QString(qApp->arguments().at(10)).replace("_", " "));
         params.append("\"");
 
         params.append("}\n");

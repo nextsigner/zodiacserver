@@ -813,7 +813,8 @@ static int read_elements_file(int32 ipl, double tjd,
     if (sema != NULL) {
       retc = check_t_terms(tt, cpos[3], sema);
       if (*sema <= 0 || retc == ERR) {
-        if (serr != NULL)
+        sprintf(serr, "!!!%s semi-axis value invalid", sema);
+          if (serr != NULL)
           sprintf(serr, "%s semi-axis value invalid", serri);
         goto return_err;
       }

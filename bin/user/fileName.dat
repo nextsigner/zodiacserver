@@ -1,10 +1,10 @@
 [General]
 GMT=1999-12-29T10:00:00
 comment=
-lat=@Variant(\0\0\0\x87\xc1\xfd\xdb\x13)
+lat=@Variant(\0\0\0\x87\xc2\r\xf0\x17)
 lon=@Variant(\0\0\0\x87\xc2r\x18_)
 name=fileName
-placeTag=Parana Entre Rios\nlat: -31.7319698\nlon: -60.5237999
+placeTag=Malargue Mendoza\nlat: -35.484462\nlon: -60.5237999
 timezone=-3
 type=Other
 z=@Variant(\0\0\0\x87\0\0\0\0)

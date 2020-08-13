@@ -260,6 +260,7 @@ Planet calculatePlanet ( PlanetId planet, const InputData& input, const Houses& 
   // TODO: wrong moon speed calculation
   // (flags: SEFLG_TRUEPOS|SEFLG_SPEED = 272)
   //         272|invertPositionFlag = 262416
+  qDebug( "A:  '%s' at julian day %f: %s", qPrintable(ret.name), jd, errStr );
   if (swe_calc_ut( jd, ret.sweNum, ret.sweFlags, xx, errStr ) >= 0)
    {
     if (!(ret.sweFlags & invertPositionFlag))
