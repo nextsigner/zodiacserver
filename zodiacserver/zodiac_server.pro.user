@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2020-08-13T15:42:15. -->
+<!-- Written by QtCreator 4.11.0, 2020-08-28T13:11:57. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -238,7 +238,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">zodiac_server2</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/media/nextsigner/ZONA-A12/nsp/unik-dev-apps/zodiacserver/zodiacserver/zodiac_server.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/media/nextsigner/ZONA-A12/nsp/unik-dev-apps/zodiacserver/zodiacserver/zodiac_server.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments">fileName 1999 12 29 7 00 -3 -35.484462 -60.5237999 Malargue_Mendoza /home/nextsigner/data.json 1500000 10 /home/nextsigner/Escritorio/capture.png 5120x2880</value>
+    <value type="QString" key="RunConfiguration.Arguments">fileName 1999 12 29 7 00 -3 -35.484462 -60.5237999 Malargue_Mendoza /home/nextsigner/data.json 1500000 10 /home/nextsigner/Escritorio/capture.png 5120x2880 /tmp/jsonHadesPrueba.json</value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>

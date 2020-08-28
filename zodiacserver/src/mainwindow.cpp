@@ -898,7 +898,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     //fileName año mes día hora minutos gmt lat lon ciudad jsonLocation ms secsTimerQuit captureLocation resCap5120x2880
     //qDebug()<<"Count args: "<<qApp->arguments().size();
 
-    if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&qApp->arguments().size()==16){
+    if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&qApp->arguments().size()==17){
         QStringList slResCap=qApp->arguments().at(15).split("x");
         if(slResCap.length()!=2){
             qDebug()<<"Error de resolución de captura.";
@@ -1030,16 +1030,17 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         QString psc;
         psc.append("\"psc\":{\n");
         for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().planets.count();i++) {
-            //qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
+            //qDebug()<<"------- "<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
             QString d=A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
             QString item;
-            qDebug()<<"["<<d<<"]\n\n";
+            //qDebug()<<"["<<d<<"]\n\n";
             QStringList m0=d.replace(" Pole", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").replace("@@@@", "@").replace("@@@", "@").replace("@@", "@").split("@");
 
             if(i!=0){
                 item.append(",");
             }
 
+            qDebug()<<"-----"<<m0.at(0)<<"-------\n\n";
             item.append("\"");
             item.append(m0.at(0));
             item.append("\":{");
@@ -1135,6 +1136,11 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         
         //qDebug()<<nz.describe(nf->horoscope(), (filesBar->currentFiles().at(0).getZodiac()::Article)articles);
 
+
+        QString extraData="";
+        QFile jsonHades(qApp->arguments().at(16));
+        jsonHades.open(QIODevice::ReadOnly);
+        extraData.append(jsonHades.readAll());
         QString json;
         json.append("{\n");
         json.append(params);
@@ -1142,6 +1148,8 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         json.append(psc.toLower());
         json.append(",");
         json.append(pc.toLower());
+        json.append(",");
+        json.append(extraData);
         json.append("}\n");
         //qDebug()<<json;
         qDebug()<<"Saving json file "<<qApp->arguments().at(11);
