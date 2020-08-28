@@ -1148,7 +1148,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         json.append(psc.toLower());
         json.append(",");
         json.append(pc.toLower());
-        json.append(",");
+        json.append(",\"jsonHades\":");
         json.append(extraData);
         json.append("}\n");
         //qDebug()<<json;
