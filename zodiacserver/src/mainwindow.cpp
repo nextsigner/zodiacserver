@@ -649,7 +649,7 @@ FilesBar :: FilesBar(QWidget *parent) : QTabBar(parent)
     setTabsClosable(true);
     setMovable(true);
     setDocumentMode(true);
-    
+    //setStyleSheet("color: red;");
     connect(this, SIGNAL(tabMoved(int,int)),      this, SLOT(swapTabs(int,int)));
     connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 }
@@ -852,6 +852,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->addWidget(filesBar, 0, Qt::AlignLeft);
+    layout->addWidget(astroWidget);
 
     //Zodiac Server
     if(qApp->applicationFilePath().indexOf("zodiac_server")<0){
@@ -952,8 +953,11 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         QString locale_st_HH = QLocale("en_EN").toString(dt, "yyyy MMMM dd HH.mm.ss zzz ap");
         qDebug()<<"Time: "<<locale_st_HH;
         dt=dt.addSecs(sec);
+        locale_st_HH = QLocale("en_EN").toString(dt, "yyyy MMMM dd HH.mm.ss zzz ap");
+        //qDebug()<<"Time: "<<locale_st_HH;
         nf.setGMT(dt);
         nf.setTimezone(qApp->arguments().at(7).toInt());
+        qDebug()<<"NF Time Zone: "<<nf.getTimezone();
         nf.setLocation(QVector3D(qApp->arguments().at(9).toFloat(), qApp->arguments().at(8).toFloat(),0));
         QString nomciu;
         nomciu.append(qApp->arguments().at(10));
@@ -1139,8 +1143,11 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
         QString extraData="";
         QFile jsonHades(qApp->arguments().at(16));
-        jsonHades.open(QIODevice::ReadOnly);
-        extraData.append(jsonHades.readAll());
+        if(jsonHades.open(QIODevice::ReadOnly)){
+            extraData.append(jsonHades.readAll());
+        }else{
+            extraData.append("\"\"");
+        }
         QString json;
         json.append("{\n");
         json.append(params);
@@ -1158,9 +1165,17 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
         jsonFile.write(json.toUtf8());
         jsonFile.close();
     }else{
-        qDebug()<<"Argumentos insuficientes";
-        //filesBar->openFile("Natalia");
-        //this->close();
+        if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&qApp->arguments().size()==2){
+            QString fn=qApp->arguments().at(1);
+            filesBar->addNewFile();
+            filesBar->openFile(fn);
+            filesBar->setStyleSheet("color: red;");
+            this->setWindowTitle(fn);
+        }else{
+            qDebug()<<"Argumentos insuficientes";
+            filesBar->setStyleSheet("color: red;");
+            filesBar->addNewFile();
+        }
     }
 }
 

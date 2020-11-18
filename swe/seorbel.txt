@@ -53,8 +53,13 @@ J1900, J1900, 165.5163, 83.66907, 0.00000,   0.0000,   0.0000, 0.0000, Poseidon 
 2425977.5, 2425977.5, 48.95, 55.1, 0.31, 280.1, 100, 15, Pickering (Pluto)      # 15
 # intramercurian hypothetical Vulcan acc. to L.H. Weston
 J1900,JDATE, 252.8987988 + 707550.7341 * T, 0.13744, 0.019, 322.212069+1670.056*T, 47.787931-1670.056*T, 7.5, Vulcan # 16
-# Selena/White Moon
-J2000,JDATE, 242.2205555 + 5143.5418158 * T, 0.05280098949, 0.0, 0.0, 0.0, 0.0, Selena/White Moon, geo # 17
+# The following elements are for test only
+# (Selena without T)
+J2000,JDATE, 242.2205555, 0.05279142865925, 0.0, 0.0, 0.0, 0.0, Selena/White Moon, geo # 17
+# (Selena with T, gives exactly the same position)
+J2000,JDATE, 242.2205555 + 5143.5418158 * T, 0.05279142865925, 0.0, 0.0, 0.0, 0.0, Selena/White Moon with T Terms, geo # 17
+J2000, JDATE, 174.794787 + 149472.5157715 * T, 0.38709831, 0.20563175 + 0.000020406 * T, 29.125226 + 0.3702885 * T, 48.330893 + 1.186189 * T, 7.004986 + 0.0018215 * T, Mercury elem. for equ. of date # 18
+J2000, J2000, 174.794787 + 149472.5157715 * T, 0.38709831, 0.20563175 + 0.000020406 * T, 29.125226 + 0.2842872 * T, 48.330893 - 0.1254229 * T, 7.004986 - 0.0059516 * T, Mercury Test J2000 Elements# 18
 # Hypothetical planet Proserpina, according to http://www.geocities.com/Hollywood/Academy/7519/proserpina.html
 # J1900, 170.73 + 51.05 * T
 J1900,JDATE, 170.73, 79.225630, 0, 0, 0, 0, Proserpina #18

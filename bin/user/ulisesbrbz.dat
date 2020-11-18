@@ -1,0 +1,10 @@
+[General]
+GMT=2002-12-22T12:35:00
+comment=
+lat=@Variant(\0\0\0\x87\xc2\v\r\t)
+lon=@Variant(\0\0\0\x87\xc2h\xef\x4)
+name=ulisesbrbz
+placeTag=Berazategui Buenos Aires Argentina\nlat: -34.7627287\nlon: -58.2334135
+timezone=-3
+type=Other
+z=@Variant(\0\0\0\x87\0\0\0\0)
