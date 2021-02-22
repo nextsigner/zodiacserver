@@ -897,9 +897,16 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     //Argumentos esperados
     //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza /home/nextsigner/data.json 15321321 10 "/home/nextsigner/Escritorio/capture.png"
     //fileName año mes día hora minutos gmt lat lon ciudad jsonLocation ms secsTimerQuit captureLocation resCap5120x2880
+
+    //Utilizado en programación Windows 7
+    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza C/nsp/uda/data.json 15321321 10 "C:/nsp/uda/capture.png" 1280x720 1280x720
+
     //qDebug()<<"Count args: "<<qApp->arguments().size();
 
     if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&(qApp->arguments().size()==2||qApp->arguments().size()==17)){
+        QString fileName;
+        fileName.append(qApp->arguments().at(1));
+        AstroFile nf;
         if(qApp->arguments().size()==17){
             QStringList slResCap=qApp->arguments().at(15).split("x");
             if(slResCap.length()!=2){
@@ -932,9 +939,6 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             connect(timerQuit, SIGNAL(timeout()), qApp, SLOT(quit()));
             timerQuit->start(qApp->arguments().at(13).toInt()*1000);
 
-            QString fileName;
-            fileName.append(qApp->arguments().at(1));
-            AstroFile nf;
             QFile docDat(fileName);
             if(!docDat.exists()){
                 nf.setName(fileName);
@@ -1171,6 +1175,28 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             jsonFile.open(QIODevice::WriteOnly);
             jsonFile.write(json.toUtf8());
             jsonFile.close();
+        }
+        if(qApp->arguments().size()==2){
+            qDebug()<<"Abriendo "<<qApp->arguments().at(1)<<" ...";
+            QFile docDat(fileName);
+            if(docDat.exists()){
+
+                //nf.load(fileName);
+                //nf.setName("archivo");
+                //nf.save();
+                //nf.resumeUpdate();
+                QStringList sl0=docDat.fileName().split("/");
+                QString fn=sl0.at(sl0.length()-1);
+                filesBar->addNewFile();
+                filesBar->openFile(fn.replace(".dat", ""));
+                //filesBar->openFile(docDat.fileName().split("/").at(docDat.fileName().split("/").length()-1).replace(".dat", ""));
+                //filesBar->openFile(fileName);
+                //filesBar->files.at(0).
+                filesBar->setStyleSheet("color: red;");
+                qDebug()<<"Archivo abierto: "<<qApp->arguments().at(1)<<".";
+            }else{
+                qDebug()<<"No se ha podido abrir el archivo: "<<qApp->arguments().at(1);
+            }
         }
     }else{
         if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&qApp->arguments().size()==2){
