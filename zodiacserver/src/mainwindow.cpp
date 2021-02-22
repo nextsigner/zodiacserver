@@ -899,7 +899,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     //fileName año mes día hora minutos gmt lat lon ciudad jsonLocation ms secsTimerQuit captureLocation resCap5120x2880
 
     //Utilizado en programación Windows 7
-    //fileName 1975 6 20 22 00 -3 -35.484462 -69.5797495 Malargue_Mendoza C/nsp/uda/data.json 15321321 10 "C:/nsp/uda/capture.png" 1280x720 1280x720
+    //fileName 1975 6 20 23 00 -3 -35.484462 -69.5797495 Malargue_Mendoza C:/nsp/uda/temp/data.json 15321321 10 "C:/nsp/uda/temp/capture.png" 1280x720 1280x720
 
     //qDebug()<<"Count args: "<<qApp->arguments().size();
 
@@ -1139,12 +1139,42 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             pc.append("}\n");
 
             //Aspectos
+            int vasp=0;
+            QString asp;
+            asp.append("\"asp\":{\n");
             for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().aspects.count();i++) {
                 QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
                 qDebug()<<"--->"<<a1<<"<---";
-            }
+                QStringList m0=a1.split(" ");
+                QString item;
+                QString tipo=m0.at(0);
+                if(tipo.contains("Trine")||tipo.contains("Conjunction")||tipo.contains("Opposition")||tipo.contains("Quadrature")){
+                    if(vasp!=0){
+                        item.append(",");
+                    }
+                    item.append("\"asp");
+                    item.append(QString::number(vasp));
+                    item.append("\":{");
 
-            //qDebug()<<A::describePower(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope());
+                    item.append("\"t\":\"");
+                    item.append(tipo);
+                    item.append("\",");
+
+                    item.append("\"p\":\"");
+                    item.append(m0.at(1));
+                    item.append("\"");
+
+                    item.append("}\n");
+                    asp.append(item);
+                    vasp++;
+                }
+            }
+             asp.append("}\n");
+
+
+
+
+             //qDebug()<<A::describePower(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope());
 
             //qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
             //resultado.append(nz.describe(nf->horoscope(), (nf.getZodiac()::Article)articles));
@@ -1165,13 +1195,16 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             json.append(",");
             json.append(psc.toLower());
             json.append(",");
+            json.append(asp);
+            json.append(",");
             json.append(pc.toLower());
             json.append(",\"jsonHades\":");
             json.append(extraData);
             json.append("}\n");
             //qDebug()<<json;
-            qDebug()<<"Saving json file "<<qApp->arguments().at(11);
-            QFile jsonFile(qApp->arguments().at(11));
+            QString jsonFileName=QString(qApp->arguments().at(11)).replace("\\", "/");
+            qDebug()<<"Saving json file "<<jsonFileName;
+            QFile jsonFile(jsonFileName);
             jsonFile.open(QIODevice::WriteOnly);
             jsonFile.write(json.toUtf8());
             jsonFile.close();
