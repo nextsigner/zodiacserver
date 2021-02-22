@@ -899,271 +899,279 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     //fileName año mes día hora minutos gmt lat lon ciudad jsonLocation ms secsTimerQuit captureLocation resCap5120x2880
     //qDebug()<<"Count args: "<<qApp->arguments().size();
 
-    if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&qApp->arguments().size()==17){
-        QStringList slResCap=qApp->arguments().at(15).split("x");
-        if(slResCap.length()!=2){
-            qDebug()<<"Error de resolución de captura.";
-            this->close();
-        }
-        int xCnWidth=slResCap.at(0).toInt();
-        int xCnHeight=slResCap.at(1).toInt();
-        xCn=new QWidget();
-        xCn->setObjectName("xcn");
-        xCn->setStyleSheet("#xcn{background-color: red}");
-        xCn->setMinimumWidth(xCnWidth);
-        xCn->setMinimumHeight(xCnHeight);
-        xCn->setMaximumWidth(xCnWidth);
-        xCn->setMaximumHeight(xCnHeight);
-        xCn->setGeometry(0,0, xCnWidth, xCnHeight);
-        xCn->show();
-        QVBoxLayout* layoutCn = new QVBoxLayout(xCn);
-        layoutCn->setSpacing(0);
-        layoutCn->setMargin(0);
-        layoutCn->addWidget(astroWidget);
+    if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&(qApp->arguments().size()==2||qApp->arguments().size()==17)){
+        if(qApp->arguments().size()==17){
+            QStringList slResCap=qApp->arguments().at(15).split("x");
+            if(slResCap.length()!=2){
+                qDebug()<<"Error de resolución de captura.";
+                this->close();
+            }
+            int xCnWidth=slResCap.at(0).toInt();
+            int xCnHeight=slResCap.at(1).toInt();
+            xCn=new QWidget();
+            xCn->setObjectName("xcn");
+            xCn->setStyleSheet("#xcn{background-color: red}");
+            xCn->setMinimumWidth(xCnWidth);
+            xCn->setMinimumHeight(xCnHeight);
+            xCn->setMaximumWidth(xCnWidth);
+            xCn->setMaximumHeight(xCnHeight);
+            xCn->setGeometry(0,0, xCnWidth, xCnHeight);
+            xCn->show();
+            QVBoxLayout* layoutCn = new QVBoxLayout(xCn);
+            layoutCn->setSpacing(0);
+            layoutCn->setMargin(0);
+            layoutCn->addWidget(astroWidget);
 
-        //Timer Capture
-        timerCapture = new QTimer(this);
-        connect(timerCapture, SIGNAL(timeout()), this, SLOT(capture()));
-        timerCapture->start(1000);
+            //Timer Capture
+            timerCapture = new QTimer(this);
+            connect(timerCapture, SIGNAL(timeout()), this, SLOT(capture()));
+            timerCapture->start(1000);
 
-        //Timer Quit
-        timerQuit = new QTimer(this);
-        connect(timerQuit, SIGNAL(timeout()), qApp, SLOT(quit()));
-        timerQuit->start(qApp->arguments().at(13).toInt()*1000);
+            //Timer Quit
+            timerQuit = new QTimer(this);
+            connect(timerQuit, SIGNAL(timeout()), qApp, SLOT(quit()));
+            timerQuit->start(qApp->arguments().at(13).toInt()*1000);
 
-        QString fileName;
-        fileName.append(qApp->arguments().at(1));
-        AstroFile nf;
-        nf.setName(fileName);
-        //nf.getZodiac()
-        
-        QDate d(qApp->arguments().at(2).toInt(), qApp->arguments().at(3).toInt(), qApp->arguments().at(4).toInt());
-        QTime t(qApp->arguments().at(5).toInt(), qApp->arguments().at(6).toInt(), 0);
+            QString fileName;
+            fileName.append(qApp->arguments().at(1));
+            AstroFile nf;
+            QFile docDat(fileName);
+            if(!docDat.exists()){
+                nf.setName(fileName);
+                QDate d(qApp->arguments().at(2).toInt(), qApp->arguments().at(3).toInt(), qApp->arguments().at(4).toInt());
+                QTime t(qApp->arguments().at(5).toInt(), qApp->arguments().at(6).toInt(), 0);
 
-        QDateTime dt;
-        dt.setDate(d);
-        dt.setTime(t);
-        int sec;
-        if(qApp->arguments().at(7).toInt()<0){
-            sec=(3600*abs(qApp->arguments().at(7).toInt()));
-        }else{
-            sec=0-(3600*qApp->arguments().at(7).toInt());
-        }
+                QDateTime dt;
+                dt.setDate(d);
+                dt.setTime(t);
+                int sec;
+                if(qApp->arguments().at(7).toInt()<0){
+                    sec=(3600*abs(qApp->arguments().at(7).toInt()));
+                }else{
+                    sec=0-(3600*qApp->arguments().at(7).toInt());
+                }
 
-        QString locale_st_HH = QLocale("en_EN").toString(dt, "yyyy MMMM dd HH.mm.ss zzz ap");
-        qDebug()<<"Time: "<<locale_st_HH;
-        dt=dt.addSecs(sec);
-        locale_st_HH = QLocale("en_EN").toString(dt, "yyyy MMMM dd HH.mm.ss zzz ap");
-        //qDebug()<<"Time: "<<locale_st_HH;
-        nf.setGMT(dt);
-        nf.setTimezone(qApp->arguments().at(7).toInt());
-        qDebug()<<"NF Time Zone: "<<nf.getTimezone();
-        nf.setLocation(QVector3D(qApp->arguments().at(9).toFloat(), qApp->arguments().at(8).toFloat(),0));
-        QString nomciu;
-        nomciu.append(qApp->arguments().at(10));
-        QString ln;
-        ln.append(nomciu.replace("_", " "));
-        ln.append("\nlat: ");
-        ln.append(qApp->arguments().at(8));
-        ln.append("\nlon: ");
-        ln.append(qApp->arguments().at(9));
-        nf.setLocationName(ln);
-        nf.save();
-        
-        //qDebug()<<"Time: "<<t.toString();
-        //qDebug()<<"Time Zone: "<<nf.getTimezone();
-        //qDebug()<<"Time GMT: "<<nf.getGMT();
-        
-        filesBar->addNewFile();
-        filesBar->openFile(fileName);
-        astroWidget->setGeometry(0,0, 800, 600);
+                QString locale_st_HH = QLocale("en_EN").toString(dt, "yyyy MMMM dd HH.mm.ss zzz ap");
+                qDebug()<<"Time: "<<locale_st_HH;
+                dt=dt.addSecs(sec);
+                locale_st_HH = QLocale("en_EN").toString(dt, "yyyy MMMM dd HH.mm.ss zzz ap");
+                //qDebug()<<"Time: "<<locale_st_HH;
+                nf.setGMT(dt);
+                nf.setTimezone(qApp->arguments().at(7).toInt());
+                qDebug()<<"NF Time Zone: "<<nf.getTimezone();
+                nf.setLocation(QVector3D(qApp->arguments().at(9).toFloat(), qApp->arguments().at(8).toFloat(),0));
+                QString nomciu;
+                nomciu.append(qApp->arguments().at(10));
+                QString ln;
+                ln.append(nomciu.replace("_", " "));
+                ln.append("\nlat: ");
+                ln.append(qApp->arguments().at(8));
+                ln.append("\nlon: ");
+                ln.append(qApp->arguments().at(9));
+                nf.setLocationName(ln);
+                nf.save();
+            }else{
+                nf.load(fileName);
+            }
+            //nf.getZodiac()
 
-        //filesBar->currentFiles().at(0)->get
 
-        //Casas
-        QString params;
-        params.append("\"params\":{\n");
 
-        params.append("\"ms\":\"");
-        params.append(qApp->arguments().at(12));
-        params.append("\",");
+            //qDebug()<<"Time: "<<t.toString();
+            //qDebug()<<"Time Zone: "<<nf.getTimezone();
+            //qDebug()<<"Time GMT: "<<nf.getGMT();
 
-        params.append("\"n\":\"");
-        params.append(qApp->arguments().at(1));
-        params.append("\",");
+            filesBar->addNewFile();
+            filesBar->openFile(fileName);
+            astroWidget->setGeometry(0,0, 800, 600);
 
-        params.append("\"a\":\"");
-        params.append(qApp->arguments().at(2));
-        params.append("\",");
+            //filesBar->currentFiles().at(0)->get
 
-        params.append("\"m\":\"");
-        params.append(qApp->arguments().at(3));
-        params.append("\",");
+            //Casas
+            QString params;
+            params.append("\"params\":{\n");
 
-        params.append("\"d\":\"");
-        params.append(qApp->arguments().at(4));
-        params.append("\",");
+            params.append("\"ms\":\"");
+            params.append(qApp->arguments().at(12));
+            params.append("\",");
 
-        params.append("\"h\":\"");
-        params.append(qApp->arguments().at(5));
-        params.append("\",");
+            params.append("\"n\":\"");
+            params.append(qApp->arguments().at(1));
+            params.append("\",");
 
-        params.append("\"min\":\"");
-        params.append(qApp->arguments().at(6));
-        params.append("\",");
+            params.append("\"a\":\"");
+            params.append(qApp->arguments().at(2));
+            params.append("\",");
 
-        params.append("\"gmt\":\"");
-        params.append(qApp->arguments().at(7));
-        params.append("\",");
+            params.append("\"m\":\"");
+            params.append(qApp->arguments().at(3));
+            params.append("\",");
 
-        params.append("\"lat\":\"");
-        params.append(qApp->arguments().at(8));
-        params.append("\",");
+            params.append("\"d\":\"");
+            params.append(qApp->arguments().at(4));
+            params.append("\",");
 
-        params.append("\"lon\":\"");
-        params.append(qApp->arguments().at(9));
-        params.append("\",");
+            params.append("\"h\":\"");
+            params.append(qApp->arguments().at(5));
+            params.append("\",");
 
-        params.append("\"ciudad\":\"");
-        params.append(QString(qApp->arguments().at(10)).replace("_", " "));
-        params.append("\"");
+            params.append("\"min\":\"");
+            params.append(qApp->arguments().at(6));
+            params.append("\",");
 
-        params.append("}\n");
+            params.append("\"gmt\":\"");
+            params.append(qApp->arguments().at(7));
+            params.append("\",");
 
-        //Planetas en signo y casa
-        QString psc;
-        psc.append("\"psc\":{\n");
-        for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().planets.count();i++) {
-            //qDebug()<<"------- "<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
-            QString d=A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
-            QString item;
-            //qDebug()<<"["<<d<<"]\n\n";
-            QStringList m0=d.replace(" Pole", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").replace("@@@@", "@").replace("@@@", "@").replace("@@", "@").split("@");
+            params.append("\"lat\":\"");
+            params.append(qApp->arguments().at(8));
+            params.append("\",");
 
-            if(i!=0){
+            params.append("\"lon\":\"");
+            params.append(qApp->arguments().at(9));
+            params.append("\",");
+
+            params.append("\"ciudad\":\"");
+            params.append(QString(qApp->arguments().at(10)).replace("_", " "));
+            params.append("\"");
+
+            params.append("}\n");
+
+            //Planetas en signo y casa
+            QString psc;
+            psc.append("\"psc\":{\n");
+            for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().planets.count();i++) {
+                //qDebug()<<"------- "<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
+                QString d=A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
+                QString item;
+                //qDebug()<<"["<<d<<"]\n\n";
+                QStringList m0=d.replace(" Pole", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").replace("@@@@", "@").replace("@@@", "@").replace("@@", "@").split("@");
+
+                if(i!=0){
+                    item.append(",");
+                }
+
+                qDebug()<<"-----"<<m0.at(0)<<"-------\n\n";
+                item.append("\"");
+                item.append(m0.at(0));
+                item.append("\":{");
+
+                item.append("\"g\":");
+                item.append(QString::number(m0.at(1).toInt()));
                 item.append(",");
+
+                item.append("\"m\":");
+                item.append(QString::number(m0.at(3).toInt()));
+
+                item.append(",");
+                item.append("\"s\":\"");
+                item.append(m0.at(2));
+                item.append("\"");
+
+                QString h="-1";
+                if(m0.at(4)=="I"){h="1";}
+                if(m0.at(4)=="II"){h="2";}
+                if(m0.at(4)=="III"){h="3";}
+                if(m0.at(4)=="IV"){h="4";}
+                if(m0.at(4)=="V"){h="5";}
+                if(m0.at(4)=="VI"){h="6";}
+                if(m0.at(4)=="VII"){h="7";}
+                if(m0.at(4)=="VIII"){h="8";}
+                if(m0.at(4)=="IX"){h="9";}
+                if(m0.at(4)=="X"){h="10";}
+                if(m0.at(4)=="XI"){h="11";}
+                if(m0.at(4)=="XII"){h="12";}
+
+                item.append(",");
+                item.append("\"h\":");
+                item.append(h);
+                item.append("");
+
+                item.append(",");
+                item.append("\"rh\":\"");
+                item.append(m0.at(4));
+                item.append("\"");
+
+                item.append("}\n");
+                psc.append(item);
+            }
+            psc.append("}\n");
+
+
+            //Casas
+            QString pc;
+            pc.append("\"pc\":{\n");
+            QStringList h0=A::describeHouses(filesBar->currentFiles().at(0)->horoscope().houses, filesBar->currentFiles().at(0)->horoscope().zodiac).split("\n");
+            for (int i=1;i<h0.length();i++) {
+                qDebug()<<h0.at(i);
+                QString d;
+                d.append(h0.at(i));
+                QStringList m0=d.replace("\"", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").replace("\n", "").split("@");
+                qDebug()<<"--->"<<m0;
+                QString item;
+                if(i!=1){
+                    item.append(",");
+                }
+
+                item.append("\"h");
+                item.append(QString::number(i));
+                item.append("\":{");
+
+                item.append("\"s\":\"");
+                item.append(m0.at(m0.length()-2));
+                item.append("\",");
+
+                item.append("\"g\":");
+                item.append(QString::number(m0.at(m0.length()-3).toInt()));
+                item.append(",");
+
+                item.append("\"m\":");
+                item.append(QString::number(m0.at(m0.length()-1).toInt()));
+                //item.append("\"");
+
+                item.append("}\n");
+                pc.append(item);
+            }
+            pc.append("}\n");
+
+            //Aspectos
+            for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().aspects.count();i++) {
+                //QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
+                //qDebug()<<a1;
             }
 
-            qDebug()<<"-----"<<m0.at(0)<<"-------\n\n";
-            item.append("\"");
-            item.append(m0.at(0));
-            item.append("\":{");
+            //qDebug()<<A::describePower(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope());
 
-            item.append("\"g\":");
-            item.append(QString::number(m0.at(1).toInt()));
-            item.append(",");
+            //qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
+            //resultado.append(nz.describe(nf->horoscope(), (nf.getZodiac()::Article)articles));
 
-            item.append("\"m\":");
-            item.append(QString::number(m0.at(3).toInt()));
-
-            item.append(",");
-            item.append("\"s\":\"");
-            item.append(m0.at(2));
-            item.append("\"");
-
-            QString h="-1";
-            if(m0.at(4)=="I"){h="1";}
-            if(m0.at(4)=="II"){h="2";}
-            if(m0.at(4)=="III"){h="3";}
-            if(m0.at(4)=="IV"){h="4";}
-            if(m0.at(4)=="V"){h="5";}
-            if(m0.at(4)=="VI"){h="6";}
-            if(m0.at(4)=="VII"){h="7";}
-            if(m0.at(4)=="VIII"){h="8";}
-            if(m0.at(4)=="IX"){h="9";}
-            if(m0.at(4)=="X"){h="10";}
-            if(m0.at(4)=="XI"){h="11";}
-            if(m0.at(4)=="XII"){h="12";}
-
-            item.append(",");
-            item.append("\"h\":");
-            item.append(h);
-            item.append("");
-
-            item.append(",");
-            item.append("\"rh\":\"");
-            item.append(m0.at(4));
-            item.append("\"");
-
-            item.append("}\n");
-            psc.append(item);
-        }
-        psc.append("}\n");
+            //qDebug()<<nz.describe(nf->horoscope(), (filesBar->currentFiles().at(0).getZodiac()::Article)articles);
 
 
-        //Casas
-        QString pc;
-        pc.append("\"pc\":{\n");
-        QStringList h0=A::describeHouses(filesBar->currentFiles().at(0)->horoscope().houses, filesBar->currentFiles().at(0)->horoscope().zodiac).split("\n");
-        for (int i=1;i<h0.length();i++) {
-            qDebug()<<h0.at(i);
-            QString d;
-            d.append(h0.at(i));
-            QStringList m0=d.replace("\"", "").replace("         ", "@").replace("         ", "@").replace("        ", "@").replace("       ", "@").replace("      ", "@").replace("     ", "@").replace("    ", "@").replace("   ", "@").replace("  ", "@").replace(" ", "@").replace(".", "").replace("\n", "").split("@");
-            qDebug()<<"--->"<<m0;
-            QString item;
-            if(i!=1){
-                item.append(",");
+            QString extraData="";
+            QFile jsonHades(qApp->arguments().at(16));
+            if(jsonHades.open(QIODevice::ReadOnly)){
+                extraData.append(jsonHades.readAll());
+            }else{
+                extraData.append("\"\"");
             }
-
-            item.append("\"h");
-            item.append(QString::number(i));
-            item.append("\":{");
-
-            item.append("\"s\":\"");
-            item.append(m0.at(m0.length()-2));
-            item.append("\",");
-
-            item.append("\"g\":");
-            item.append(QString::number(m0.at(m0.length()-3).toInt()));
-            item.append(",");
-
-            item.append("\"m\":");
-            item.append(QString::number(m0.at(m0.length()-1).toInt()));
-            //item.append("\"");
-
-            item.append("}\n");
-            pc.append(item);
+            QString json;
+            json.append("{\n");
+            json.append(params);
+            json.append(",");
+            json.append(psc.toLower());
+            json.append(",");
+            json.append(pc.toLower());
+            json.append(",\"jsonHades\":");
+            json.append(extraData);
+            json.append("}\n");
+            //qDebug()<<json;
+            qDebug()<<"Saving json file "<<qApp->arguments().at(11);
+            QFile jsonFile(qApp->arguments().at(11));
+            jsonFile.open(QIODevice::WriteOnly);
+            jsonFile.write(json.toUtf8());
+            jsonFile.close();
         }
-        pc.append("}\n");
-
-        //Aspectos
-        for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().aspects.count();i++) {
-            //QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
-            //qDebug()<<a1;
-        }
-
-        //qDebug()<<A::describePower(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope());
-
-        //qDebug()<<A::describePlanet(filesBar->currentFiles().at(0)->horoscope().planets.value(i), filesBar->currentFiles().at(0)->horoscope().zodiac);
-        //resultado.append(nz.describe(nf->horoscope(), (nf.getZodiac()::Article)articles));
-        
-        //qDebug()<<nz.describe(nf->horoscope(), (filesBar->currentFiles().at(0).getZodiac()::Article)articles);
-
-
-        QString extraData="";
-        QFile jsonHades(qApp->arguments().at(16));
-        if(jsonHades.open(QIODevice::ReadOnly)){
-            extraData.append(jsonHades.readAll());
-        }else{
-            extraData.append("\"\"");
-        }
-        QString json;
-        json.append("{\n");
-        json.append(params);
-        json.append(",");
-        json.append(psc.toLower());
-        json.append(",");
-        json.append(pc.toLower());
-        json.append(",\"jsonHades\":");
-        json.append(extraData);
-        json.append("}\n");
-        //qDebug()<<json;
-        qDebug()<<"Saving json file "<<qApp->arguments().at(11);
-        QFile jsonFile(qApp->arguments().at(11));
-        jsonFile.open(QIODevice::WriteOnly);
-        jsonFile.write(json.toUtf8());
-        jsonFile.close();
     }else{
         if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&qApp->arguments().size()==2){
             QString fn=qApp->arguments().at(1);
@@ -1173,6 +1181,7 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
             this->setWindowTitle(fn);
         }else{
             qDebug()<<"Argumentos insuficientes";
+            qDebug()<<"Cantidad de Argumentos: "<<qApp->arguments().length();
             filesBar->setStyleSheet("color: red;");
             filesBar->addNewFile();
         }
