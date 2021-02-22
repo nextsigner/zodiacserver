@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.5.1, 2021-02-22T14:04:37. -->
+<!-- Written by QtCreator 3.5.1, 2021-02-22T15:00:03. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -229,7 +229,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">zodiac_server</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/nsp/uda/zodiacserver/zodiacserver/zodiac_server.pro</value>
-    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments">C:/nsp/uda/zodiacserver/bin/user/fileName.dat</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments">fileName 1975 6 20 23 00 -3 -35.484462 -69.5797495 Malargue_Mendoza C/nsp/uda/data.json 15321321 10 &quot;C:/nsp/uda/capture.png&quot; 1280x720 1280x720</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">zodiac_server.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseTerminal">false</value>

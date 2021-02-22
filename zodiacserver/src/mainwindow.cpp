@@ -1140,8 +1140,8 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
 
             //Aspectos
             for (int i=0;i<filesBar->currentFiles().at(0)->horoscope().aspects.count();i++) {
-                //QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
-                //qDebug()<<a1;
+                QString a1=A::describeAspect(filesBar->currentFiles().at(0)->horoscope().aspects.value(i));
+                qDebug()<<"--->"<<a1<<"<---";
             }
 
             //qDebug()<<A::describePower(filesBar->currentFiles().at(0)->horoscope().sun, filesBar->currentFiles().at(0)->horoscope());
