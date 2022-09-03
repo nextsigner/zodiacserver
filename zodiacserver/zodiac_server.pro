@@ -1,4 +1,5 @@
-QT += widgets network declarative
+#QT += widgets network declarative
+QT += widgets network qml quick
 DESTDIR = $$_PRO_FILE_PWD_/../bin
 TARGET = zodiac_server
 TEMPLATE = app
@@ -18,3 +19,9 @@ include(zodiac.pri)
 
 DISTFILES += \
     src/test.sh
+
+HEADERS += \
+    astroqmlviewv2.h
+
+SOURCES += \
+    #astroqmlviewv2.cpp

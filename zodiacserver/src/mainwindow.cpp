@@ -19,7 +19,8 @@
 #include "../chart/src/chart.h"
 #include "../fileeditor/src/fileeditor.h"
 #include "../fileeditor/src/geosearch.h"
-#include "../planets/src/planets.h"
+//#include "../planets/src/planets.h"
+//#include "../astroqmlviewv2.h"
 #include "../details/src/details.h"
 #include "mainwindow.h"
 
@@ -166,7 +167,7 @@ AstroWidget :: AstroWidget(QWidget *parent) : QWidget(parent)
     
     addDockWidget(new Details, tr("Details"), true);
     addSlide(new Chart,   QIcon("style/natal.png"),   tr("Chart"));
-    addSlide(new Planets, QIcon("style/planets.png"), tr("Planets"));
+    //addSlide(new Planets, QIcon("style/planets.png"), tr("Planets"));
     addSlide(new Plain,   QIcon("style/plain.png"),   tr("Text"));
     addHoroscopeControls();
     
@@ -323,10 +324,10 @@ void AstroWidget :: addDockWidget(AstroFileHandler* w, QString title, bool scrol
     
     if (scrollable)
     {
-        QScrollArea* area = new QScrollArea;
+        /*QScrollArea* area = new QScrollArea;
         area->setWidget(w);
         area->setWidgetResizable(true);
-        dock->setWidget(area);
+        dock->setWidget(area);*/
     }
     else
     {
@@ -901,9 +902,10 @@ MainWindow :: MainWindow(QWidget *parent) : QMainWindow(parent), Customizable()
     //Utilizado en programación Windows 7
     //fileName 1975 6 20 23 00 -3 -35.484462 -69.5797495 Malargue_Mendoza C:/nsp/uda/temp/data.json 15321321 10 "C:/nsp/uda/temp/capture.png" 1280x720 1280x720
 
-    //qDebug()<<"Count args: "<<qApp->arguments().size();
+    qDebug()<<"Count args: "<<qApp->arguments().size();
 
     if(qApp->applicationFilePath().indexOf("zodiac_server")>0&&(qApp->arguments().size()==2||qApp->arguments().size()==17)){
+        qDebug()<<"Se toman argumentos "<<qApp->arguments();
         QString fileName;
         fileName.append(qApp->arguments().at(1));
         AstroFile nf;

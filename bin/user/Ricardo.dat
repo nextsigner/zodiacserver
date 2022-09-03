@@ -1,0 +1,10 @@
+[General]
+GMT=1975-06-21T02:04:15
+comment=
+lat=@Variant(\0\0\0\x87\x42\xf\x1e\xb8)
+lon=@Variant(\0\0\0\x87\x42\x8b.\x14)
+name=Ricardo
+placeTag=
+timezone=-3
+type=Male
+z=@Variant(\0\0\0\x87\0\0\0\0)
